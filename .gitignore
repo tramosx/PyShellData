@@ -1,0 +1,19 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pdb
+
+
+# Flask
+instance/
+*.env
+*.pyc
+
+# Dependências
+.env/
+venv/
+.venv/
+
+.vscode/
