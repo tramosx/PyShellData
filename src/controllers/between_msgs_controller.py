@@ -1,7 +1,10 @@
+import os
+
 from flask import request, jsonify
 
 from src.services.bash_service import execute_bash_script_between_msgs
 from src.utils.utils import parse_line_to_json, extract_username
+from src.config import Config
 
 
 def between_msgs():
@@ -13,8 +16,15 @@ def between_msgs():
 
     if not filename or not qtd_min or not qtd_max:
         return jsonify({"error": "File name and message quantity are required"}), 400
+    
+    
+    filepath = os.path.join(Config.UPLOAD_FOLDER, filename)
 
-    output, error = execute_bash_script_between_msgs(filename, qtd_min, qtd_max)
+    if not os.path.exists(filepath):
+        return jsonify({"error": "File not found"}), 404
+
+
+    output, error = execute_bash_script_between_msgs(filepath, qtd_min, qtd_max)
 
     if error:
         return jsonify({"error": error}), 500

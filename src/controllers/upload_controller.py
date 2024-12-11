@@ -6,7 +6,6 @@ def upload_file():
     from src.services.file_service import handle_file_upload  # Importação local
 
     file = request.files.get('file')
-    breakpoint()
     if not file:
         return jsonify({"error": "No file part in the request"}), 400
 

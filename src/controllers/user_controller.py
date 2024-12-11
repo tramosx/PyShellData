@@ -1,4 +1,8 @@
+import os
+
 from flask import request, jsonify
+from src.config import Config
+
 
 def get_user():
     from src.services.user_service import get_users_sorted
@@ -11,8 +15,14 @@ def get_user():
 
     if not filename:
         return jsonify({"error": "File name is required"}), 400
+    
+    filepath = os.path.join(Config.UPLOAD_FOLDER, filename)
 
-    users = get_users_sorted(filename, filter_username, desc)
+    if not os.path.exists(filepath):
+        return jsonify({"error": "File not found"}), 404
+
+
+    users = get_users_sorted(filepath, filter_username, desc)
     start = (page - 1) * per_page
     end = start + per_page
     paginated_users = users[start:end]
